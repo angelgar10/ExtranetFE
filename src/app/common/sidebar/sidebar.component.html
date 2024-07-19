@@ -1,0 +1,82 @@
+<div
+    class="sidebar-area bg-white active"
+    [ngClass]="{'active': isSidebarToggled}"
+    [class.component-dark-theme]="themeService.isDark()"
+    [class.dark-sidebar]="themeService.isSidebarDark()"
+    [class.right-sidebar]="themeService.isRightSidebar()"
+    [class.hide-sidebar]="themeService.isHideSidebar()"
+    [class.card-borderd-theme]="themeService.isCardBorder()"
+    [class.rtl-enabled]="themeService.isRTLEnabled()"
+>
+    <div class="logo bg-white">
+        <a routerLink="/" class="d-flex align-items-center">
+            <img src="images/logo-only.png" height="50" width="50" alt="logo-icon">
+            <span class="fw-semibold">CECYTECH</span>
+        </a>
+    </div>
+    <div
+        (click)="toggle()"
+        class="burger-menu"
+        [ngClass]="{'active': isSidebarToggled}"
+    >
+        <span class="top-bar"></span>
+        <span class="middle-bar"></span>
+        <span class="bottom-bar"></span>
+    </div>
+    <ng-scrollbar visibility="hover">
+        <div class="sidebar-inner">
+            <div class="sidebar-menu">
+                <mat-accordion>
+                    <span class="sub-title text-body">
+                        MODULES
+                    </span>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <i class="material-symbols-outlined">
+                                    forum
+                                </i>
+                                <span class="title">
+                                    Forms
+                                </span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ul class="sidebar-sub-menu">
+                            <li class="sidemenu-item">
+                                <a routerLink="/forms" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Basic Elements
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/forms/advanced-elements" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Advanced Elements
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/forms/wizard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Wizard
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/forms/editors" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    Editors
+                                </a>
+                            </li>
+                            <li class="sidemenu-item">
+                                <a routerLink="/forms/file-uploader" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidemenu-link">
+                                    File Uploader
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+                    <a routerLink="/authentication/logout" class="sidebar-menu-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <i class="material-symbols-outlined">
+                            logout
+                        </i>
+                        <span class="title">Logout</span>
+                    </a>
+                </mat-accordion>
+            </div>
+        </div>
+    </ng-scrollbar>
+</div>
