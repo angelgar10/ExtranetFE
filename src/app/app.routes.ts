@@ -6,14 +6,16 @@ import { AdvancedElementsComponent } from './forms/advanced-elements/advanced-el
 import { InternalErrorComponent } from './common/internal-error/internal-error.component';
 import { AuthComponent } from './pages/auth/auth/auth.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
+import { authGuard } from '@app/guards/auth/auth.guard';
+import { unauthGuard } from '@app/guards/unauth/unauth.guard';
 
 export const routes: Routes = [
-    {path: '', component: BasicElementsComponent},
+    {path: '', component: BasicElementsComponent, canActivate: [authGuard]},
     {
         path: 'authentication',
         component: AuthComponent,
         children: [
-            {path: '', component: SigninComponent}
+            {path: '', component: SigninComponent, canActivate: [unauthGuard]}
         ]
     },
     {path: 'internal-error', component: InternalErrorComponent},

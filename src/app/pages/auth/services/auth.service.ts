@@ -24,9 +24,30 @@ export class AuthService {
   async logout() {
     try {
       await signOut(this.auth);
+      localStorage.removeItem('token');
     } catch (error) {
       console.error('Error during logout', error);
       throw error;
     }
+  }
+
+  isLogged(): boolean {
+    //ToDo:implement correctly
+    const token = localStorage.getItem('token');
+    if(token)
+      return true;
+    return false;
+    // if(this.currentUser === null) {
+    //   return false;
+    // }
+
+    // const now = new Date().getTime();
+    // const dateExpiration = new Date(this.currentUser.expiration);
+    // if (now >= dateExpiration.getTime()) {
+    //   this.removeLocalStorage();
+    //   return false;
+    // } else {
+    //   return true;
+    // }
   }
 }

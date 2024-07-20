@@ -46,10 +46,10 @@ export class SidebarComponent {
 
     async logoutGoogle() {
         try {
-          await this.authService.logout();
-          this.router.navigate(['/authentication']);
+            await this.authService.logout();
+            this.router.navigate(['/authentication']);
         } catch (error) {
-          console.error('Logout failed', error);
+            console.error('Logout failed', error);
         }
     }
 
