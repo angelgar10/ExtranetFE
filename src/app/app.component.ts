@@ -18,7 +18,7 @@ import { ToggleService } from './common/sidebar/toggle.service';
 export class AppComponent {
 
     // Title
-    title = 'Daxa - Angular 18 Material Design Admin Dashboard Template';
+    title = 'CECYTECH';
 
     // isSidebarToggled
     isSidebarToggled = false;

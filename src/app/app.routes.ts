@@ -4,16 +4,16 @@ import { FormsComponent } from './forms/forms.component';
 import { BasicElementsComponent } from './forms/basic-elements/basic-elements.component';
 import { AdvancedElementsComponent } from './forms/advanced-elements/advanced-elements.component';
 import { InternalErrorComponent } from './common/internal-error/internal-error.component';
-import { SignInComponent } from './authentication/sign-in/sign-in.component';
-import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthComponent } from './pages/auth/auth/auth.component';
+import { SigninComponent } from './pages/auth/signin/signin.component';
 
 export const routes: Routes = [
     {path: '', component: BasicElementsComponent},
     {
         path: 'authentication',
-        component: AuthenticationComponent,
+        component: AuthComponent,
         children: [
-            {path: '', component: SignInComponent}
+            {path: '', component: SigninComponent}
         ]
     },
     {path: 'internal-error', component: InternalErrorComponent},
