@@ -9,11 +9,12 @@ export class AuthService {
 
   async loginWithGoogle() {
     try {
+      console.log('entro al servicio');
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       const token = await result.user.getIdToken();
-    localStorage.setItem('token', token);
-    return result.user;
+      localStorage.setItem('token', token);
+      return result.user;
     } catch (error) {
       console.error('Error during Google login', error);
       throw error;

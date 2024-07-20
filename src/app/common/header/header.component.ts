@@ -3,8 +3,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Component, HostListener } from '@angular/core';
 import { ToggleService } from '../sidebar/toggle.service';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
+import { AuthService } from '@app/pages/auth/services/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -23,7 +24,9 @@ export class HeaderComponent {
 
     constructor(
         private toggleService: ToggleService,
-        public themeService: CustomizerSettingsService
+        public themeService: CustomizerSettingsService,
+        private authService: AuthService,
+        private router: Router
     ) {
         this.toggleService.isSidebarToggled$.subscribe(isSidebarToggled => {
             this.isSidebarToggled = isSidebarToggled;
@@ -55,4 +58,12 @@ export class HeaderComponent {
         this.themeService.toggleTheme();
     }
 
+    async logoutGoogle() {
+        try {
+          await this.authService.logout();
+          this.router.navigate(['/authentication']);
+        } catch (error) {
+          console.error('Logout failed', error);
+        }
+    }
 }

@@ -23,14 +23,9 @@ export class SigninComponent {
 
   constructor(
     private authService: AuthService,
-      private fb: FormBuilder,
       private router: Router,
       public themeService: CustomizerSettingsService
   ) {
-      this.authForm = this.fb.group({
-          email: ['', [Validators.required, Validators.email]],
-          password: ['', [Validators.required, Validators.minLength(8)]],
-      });
       this.themeService.isToggled$.subscribe(isToggled => {
           this.isToggled = isToggled;
       });
@@ -39,21 +34,10 @@ export class SigninComponent {
   // Password Hide
   hide = true;
 
-  // Form
-  authForm: FormGroup;
-  onSubmit() {
-      if (this.authForm.valid) {
-          this.router.navigate(['/']);
-      } else {
-          console.log('Form is invalid. Please check the fields.');
-      }
-  }
-
   async loginWithGoogle() {
     try {
       const user = await this.authService.loginWithGoogle();
-      console.log('User logged in:', user);
-      // Send the token to your backend
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Login failed', error);
     }
