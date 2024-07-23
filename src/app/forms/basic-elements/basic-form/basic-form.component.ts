@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
+import { AuthService } from '@app/pages/auth/services/auth.service';
 
 @Component({
     selector: 'app-basic-form',
@@ -23,7 +24,8 @@ export class BasicFormComponent {
     hide = true;
 
     constructor(
-        public themeService: CustomizerSettingsService
+        public themeService: CustomizerSettingsService,
+        private authService: AuthService
     ) {
         this.themeService.isToggled$.subscribe(isToggled => {
             this.isToggled = isToggled;
@@ -36,6 +38,12 @@ export class BasicFormComponent {
     // RTL Mode
     toggleRTLEnabledTheme() {
         this.themeService.toggleRTLEnabledTheme();
+    }
+
+    onSignIn(): void {
+        this.authService.getSecureData().subscribe(response => {
+            console.log('response', response);
+          });
     }
 
 }

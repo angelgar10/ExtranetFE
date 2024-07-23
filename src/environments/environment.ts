@@ -4,7 +4,7 @@ export const environment = {
   appVersion: packageInfo.version,
   production: false,
   name: "dev",
-  url: 'http://localhost:5000/',
+  url: 'http://localhost:5021/',
   firebase: {
     "projectId":"extranet-a4a1c",
     "appId":"1:612273775473:web:076683cb0dcf0601dc8cd0",

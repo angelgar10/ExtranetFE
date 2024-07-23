@@ -6,8 +6,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { authInterceptor } from '@app/interceptors/auth.interceptor';
 import { environment } from 'environments/environment';
 
 export const appConfig: ApplicationConfig = {
@@ -18,6 +18,8 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+        provideHttpClient(
+            withInterceptors([authInterceptor]),
+        )
     ]
 };

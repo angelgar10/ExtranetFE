@@ -1,15 +1,19 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth, signInWithPopup, GoogleAuthProvider, signOut } from '@angular/fire/auth';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth) { }
+  constructor(
+    private auth: Auth,
+    private http: HttpClient
+  ) { }
 
   async loginWithGoogle() {
     try {
-      console.log('entro al servicio');
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       const token = await result.user.getIdToken();
@@ -49,5 +53,9 @@ export class AuthService {
     // } else {
     //   return true;
     // }
+  }
+
+  getSecureData() {
+    return this.http.get(`${environment.url}weatherforecast`);
   }
 }
