@@ -40,10 +40,4 @@ export class BasicFormComponent {
         this.themeService.toggleRTLEnabledTheme();
     }
 
-    onSignIn(): void {
-        this.authService.getSecureData().subscribe(response => {
-            console.log('response', response);
-          });
-    }
-
 }

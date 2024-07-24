@@ -1,48 +1,36 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { AuthService } from '@app/pages/auth/services/auth.service';
+import { inject } from '@angular/core';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log('auth interceptor...');
-  const token = localStorage.getItem('token');
-  if(!token)
-    return next(req);
-
-  if(req.headers.get('Authorization') === undefined || req.headers.get('Authorization') === null){
-    const request = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + token)
-    });
-    return next(request);
-  }
-  return next(req);
+  const authService = inject(AuthService);
+  let authReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${authService.token}`
+    }
+  });
+  
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        return authService.refreshToken().pipe(
+          switchMap((newToken: string) => {
+            authService.setToken(newToken);
+            authReq = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newToken}`
+              }
+            });
+            return next(authReq);
+          }),
+          catchError(err => {
+            authService.logout();
+            return throwError(err);
+          })
+        );
+      }
+      return throwError(error);
+    })
+  );
 };
-
-
-
-// import { Injectable } from '@angular/core';
-// import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// @Injectable()
-// export class AuthInterceptor implements HttpInterceptor {
-
-//   constructor() {}
-
-//   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-//     //ToDo:Implement auth service
-//     const token = localStorage.getItem('token');
-//     console.log('entro al interceprot', token);
-//     if(!token)
-//         return next.handle(req);
-//     // const user = JSON.parse(localStorage.getItem('user')) as fromAuth.ResponseLogin
-//     // if( !user ) {
-//     //   return next.handle(req);
-//     // }
-
-//     if(req.headers.get('Authorization') === undefined || req.headers.get('Authorization') === null){
-//       const request = req.clone({
-//         headers: req.headers.set('Authorization', 'Bearer ' + token)
-//       });
-//       return next.handle(request);
-//     }
-//     return next.handle(req);
-//   }
-// }

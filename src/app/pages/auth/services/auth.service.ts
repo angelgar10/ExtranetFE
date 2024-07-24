@@ -1,15 +1,16 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth, signInWithPopup, GoogleAuthProvider, signOut } from '@angular/fire/auth';
-import { environment } from 'environments/environment';
+import { Auth, signInWithPopup, GoogleAuthProvider, signOut, user, getIdToken } from '@angular/fire/auth';
+import { jwtDecode } from "jwt-decode";
+import * as fromAuth from '../models'
+import { from, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   constructor(
-    private auth: Auth,
-    private http: HttpClient
+    private auth: Auth
   ) { }
 
   async loginWithGoogle() {
@@ -17,7 +18,7 @@ export class AuthService {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       const token = await result.user.getIdToken();
-      localStorage.setItem('token', token);
+      this.setToken(token);
       return result.user;
     } catch (error) {
       console.error('Error during Google login', error);
@@ -35,27 +36,46 @@ export class AuthService {
     }
   }
 
+  getToken(): Observable<string> {
+    return from(this.auth.currentUser?.getIdToken() ?? Promise.reject('No user logged in'));
+  }
+
+  refreshToken(): Observable<string> {
+    return from(this.auth.currentUser?.getIdToken(true) ?? Promise.reject('No user logged in'));
+  }
+
   isLogged(): boolean {
-    //ToDo:implement correctly
-    const token = localStorage.getItem('token');
-    if(token)
+    if(!this.currentUser)
+      return false;
+
+    const now = new Date().getTime();
+    const dateExpiration = new Date(0);
+    dateExpiration.setUTCSeconds(this.currentUser.exp);
+    if (now >= dateExpiration.getTime()) {
+      this.removeSession();
+      return false;
+    } else {
       return true;
-    return false;
-    // if(this.currentUser === null) {
-    //   return false;
-    // }
-
-    // const now = new Date().getTime();
-    // const dateExpiration = new Date(this.currentUser.expiration);
-    // if (now >= dateExpiration.getTime()) {
-    //   this.removeLocalStorage();
-    //   return false;
-    // } else {
-    //   return true;
-    // }
+    }
   }
 
-  getSecureData() {
-    return this.http.get(`${environment.url}weatherforecast`);
+  removeSession(): void {
+    localStorage.removeItem('token');
   }
+
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  get currentUser(): fromAuth.GoogleUser | null {
+    const tokenString = this.token;
+    if(!tokenString)
+      return null;
+    return jwtDecode<fromAuth.GoogleUser>(tokenString);
+  }
+
+  get token(): string  {
+    return localStorage.getItem('token') || '';
+  }
+  
 }
