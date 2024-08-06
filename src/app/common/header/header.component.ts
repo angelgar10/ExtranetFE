@@ -25,7 +25,7 @@ export class HeaderComponent {
     constructor(
         private toggleService: ToggleService,
         public themeService: CustomizerSettingsService,
-        private authService: AuthService,
+        public authService: AuthService,
         private router: Router
     ) {
         this.toggleService.isSidebarToggled$.subscribe(isSidebarToggled => {

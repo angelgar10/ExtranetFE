@@ -9,7 +9,6 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from '@app/interceptors/auth.interceptor';
 import { environment } from 'environments/environment';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 export const appConfig: ApplicationConfig = {
     providers: [

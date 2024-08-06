@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithPopup, GoogleAuthProvider, signOut, user, getIdToken } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, signOut } from '@angular/fire/auth';
 import { jwtDecode } from "jwt-decode";
 import * as fromAuth from '../models'
 import { from, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class AuthService {
   async logout() {
     try {
       await signOut(this.auth);
-      localStorage.removeItem('token');
+      this.removeSession();
     } catch (error) {
       console.error('Error during logout', error);
       throw error;
@@ -48,15 +47,7 @@ export class AuthService {
     if(!this.currentUser)
       return false;
 
-    const now = new Date().getTime();
-    const dateExpiration = new Date(0);
-    dateExpiration.setUTCSeconds(this.currentUser.exp);
-    if (now >= dateExpiration.getTime()) {
-      this.removeSession();
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 
   removeSession(): void {
