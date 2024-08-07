@@ -6,9 +6,9 @@ import { dictionaryRoutes } from '@app/shared/dictionaries/dictionary.routes';
 export const unauthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  if (authService.isLogged()) {
-    router.navigate([dictionaryRoutes.home]);
-    return false;
-  }
+  // if (authService.isLogged()) {
+  //   router.navigate([dictionaryRoutes.home]);
+  //   return false;
+  // }
   return true;
 };

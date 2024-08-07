@@ -45,7 +45,7 @@
                     >
                         <div class="title d-flex align-items-center justify-content-between">
                             <span class="fw-medium">
-                                Messages 
+                                Messages
                                 <span class="text-body fw-normal">(05)</span>
                             </span>
                             <a routerLink="/chat" class="link-btn text-daxa">
@@ -171,7 +171,7 @@
             </li> -->
             <li>
                 <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-menu-btn">
-                    <img [src]="authService.currentUser?.picture" alt="profile-image">
+                    <img [src]="user?.photoURL" alt="profile-image">
                     <span class="status d-inline-block rounded-circle position-absolute"></span>
                 </button>
                 <mat-menu class="profile-menu-dropdown" #profileMenu="matMenu" xPosition="before">
@@ -179,10 +179,10 @@
                         [class.dark-menu]="themeService.isDark() || themeService.isHeaderDark()"
                     >
                         <div class="menu-header d-flex align-items-center">
-                            <img [src]="authService.currentUser?.picture" alt="profile-image">
+                            <img [src]="user?.photoURL" alt="profile-image">
                             <div class="title">
                                 <a routerLink="/my-profile" class="d-inline-block fw-medium">
-                                    {{authService.currentUser?.name}}
+                                    {{user?.displayName}}
                                 </a>
                                 <span class="designation d-block text-body">
                                     Admin

@@ -34,12 +34,23 @@ export class SigninComponent {
   // Password Hide
   hide = true;
 
-  async loginWithGoogle() {
+  async login() {
     try {
-      const user = await this.authService.loginWithGoogle();
-      this.router.navigate(['/']);
+      await this.authService.loginWithGoogle();
     } catch (error) {
       console.error('Login failed', error);
     }
+    // this.authService.loginWithGoogle().subscribe({
+    //   next: async (result) => {
+    //     //ToDo:Validate cecytech domain
+    //     console.log('User signed in successfully:', result);
+    //     const token = await result.user.getIdToken();
+    //     this.authService.setToken(token);
+    //     this.router.navigate(['/']);
+    //   },
+    //   error: (error) => {
+    //     console.error('Login error:', error);
+    //   }
+    // });
   }
 }
