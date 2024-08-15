@@ -4,9 +4,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { Router } from '@angular/router';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { AuthService } from '../services/auth.service';
 
@@ -23,7 +22,6 @@ export class SigninComponent {
 
   constructor(
     private authService: AuthService,
-      private router: Router,
       public themeService: CustomizerSettingsService
   ) {
       this.themeService.isToggled$.subscribe(isToggled => {

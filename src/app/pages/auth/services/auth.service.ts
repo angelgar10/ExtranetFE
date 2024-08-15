@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { dictionaryRoutes } from '@app/shared/dictionaries/dictionary.routes';
 import { dictionaryCommon } from '@app/shared/dictionaries/dictionary.common';
 import { dictionaryAuth } from '../../auth/dictionaries/dictionary.auth';
+import { NotificationService } from '@app/shared/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class AuthService {
   constructor(
     private auth: Auth,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) {
     this.user$ = user(this.auth);
   }
@@ -31,7 +33,7 @@ export class AuthService {
     if(this.domainValid) {
       this.router.navigate([dictionaryRoutes.home]);
     } else {
-      //ToDo:Implement notification service.
+      this.notificationService.showErrorMessage(dictionaryAuth.messages.error.domainNotValid);
       this.logout();
     }
     
